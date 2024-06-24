@@ -5,5 +5,5 @@ from .import views	#. manje tyach directory madhe views aahe jya directory madhe
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",views.home name="home"),	
+    path("",views.home,name="home")	
 ]
