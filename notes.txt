@@ -1,0 +1,4 @@
+aapan collectstatic cha command use karto python manage.py collectstatic mahnun karnki production purpose sathi use karava lagta hyala aapan deployement sathi use karto web application la host karnya sathi collectstatic vaprava lagta
+
+2) github che videos skip kelet 51 & 60 pending aahe
+3).gitignore yath aapan names of folders or files list karto je aaplya la github repository var nahi patvaychet infact we can manage which we want to send and which we don't want to send
