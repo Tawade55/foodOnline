@@ -3,3 +3,9 @@ aapan collectstatic cha command use karto python manage.py collectstatic mahnun 
 2) github che videos skip kelet 51 & 60 pending aahe
 3).gitignore yath aapan names of folders or files list karto je aaplya la github repository var nahi patvaychet infact we can manage which we want to send and which we don't want to send
 4)baher chi static files collectstatic vali aahe production purpose sathi
+5)de-couple command vaparla aahe jyane karun aapla postgres cha password repository madhe nahi disla paije 
+mahnun tya nantar ek .env file banavli aahe ji aapla password,user name ,host sagla contain karte ani setting madhli secret key pan ani heh sagla config settings madhe fetch karta pan toh DB_NAME,DB_USER,DB_HOST hya refeernce ne 
+call karto tyanna jya ne karun aapla password koanala visible nasta repo madhe ani ti .env file 
+.gitignore ignore karto tila manjech repo madhe add nahi karat 
+6)Django Signals are used for perfroming actions on every modifications or a creation of particular entry field in database
+7)Djano model Forms are inbuilt django features and provide replica of models and they are secure too
