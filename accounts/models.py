@@ -79,6 +79,15 @@ class User(AbstractBaseUser):   #this abstractbaseuser are used for modifying th
     def has_module_perms(self,app_label):
         return True
     
+    def get_role(self):
+        if self.role == 1:
+            user_role = 'Vendor'
+        elif self.role == 2:
+            user_role = 'Customer'
+        return user_role    
+
+
+    
 
 class userprofile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True)  #hyat na one to one field vaparli aahe karanki one user can have only one user profile aani tyala varcha User chya table la link kelay on_delete manje profile delete jhala tar user che sagle details delete hoyayla paije,blank ani null aasach lilay kahi error nahi dila paije mahnun     
