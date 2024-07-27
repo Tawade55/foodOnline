@@ -41,11 +41,11 @@ class UserManager(BaseUserManager): #usermanager manje tu customize database ban
         return user 
 
 class User(AbstractBaseUser):   #this abstractbaseuser are used for modifying the customized models and also include the authentication which is supported by django .  
-    RESTAURANT=1
+    VENDOR=1
     CUSTOMER=2
 
     ROLE_CHOICE=(
-        (RESTAURANT,'Restaurant'),
+        (VENDOR,'Vendor'),
         (CUSTOMER,'Customer'),
     )
     first_name=models.CharField(max_length=50)
