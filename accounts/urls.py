@@ -12,4 +12,11 @@ urlpatterns=[
     path('custdashboard/',views.custdashboard,name='custdashboard'),
     path('vendordashboard/',views.vendordashboard,name='vendordashboard'),
 
+    #send verification link
+    path('activate/<uidb64>/<token>',views.activate,name='activate'),
+
+    path('forget_password/',views.forget_password,name='forget_password'),
+    path('forget_password_validate/<uidb64>/<token>',views.forget_password_validate,name='forget_password_validate'),
+    path('reset_password/',views.reset_password,name='reset_password'),
+
 ]
