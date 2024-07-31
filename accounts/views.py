@@ -9,6 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 #from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
+from vendor.models import Vendor
 
 #Restrict The Vendor from accessing the customer page
 def check_role_vendor(user):

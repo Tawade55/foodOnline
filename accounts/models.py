@@ -104,6 +104,8 @@ class userprofile(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)
 
+    def full_address(self):
+        return f'{self.address_line_1},{self.address_line_2}'
     def __str__(self):
         return self.user.email  #heh User chya mail la call kelay
 

@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from .import views
 
 urlpatterns=[
+    path('',views.myAccount),
     path('registerUser/',views.registerUser,name='registerUser'),
     path('registerVendor/',views.registerVendor,name='registerVendor'),
 
@@ -18,5 +19,7 @@ urlpatterns=[
     path('forget_password/',views.forget_password,name='forget_password'),
     path('forget_password_validate/<uidb64>/<token>',views.forget_password_validate,name='forget_password_validate'),
     path('reset_password/',views.reset_password,name='reset_password'),
+
+    path('vendor/',include('vendor.urls'))
 
 ]
