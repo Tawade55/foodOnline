@@ -12,3 +12,5 @@ call karto tyanna jya ne karun aapla password koanala visible nasta repo madhe a
 8)Multipart manje jeva images vagere register kartana use kartat(profile photo tasa yath license aahe mahnun multipart keleay use) tya sathi mulipart
 9)je HTML madhe form action madhe aapan url deto na toh url direct views madhe tya function la call karto
 10)utils.py as a helper function mahnun ghetlay joh aaplya la help karto detect karayla whether it is a user or vendor
+11)We're using 3 google Api's they are google geocoding,google places,google maps javascript by using all this three while writing places name we will get recommendations of places
+12)Verbose is used in models to change the name in models in admin panel 

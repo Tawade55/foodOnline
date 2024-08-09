@@ -6,7 +6,18 @@ from accounts.models import userprofile
 from .models import Vendor
 from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_vendor
+from menu.models import Category
+from menu.models import FoodItem
+from menu.forms import CategoryForm
+from django.template.defaultfilters import slugify
+
 # Create your views here.
+
+def get_vendor(request):
+    vendor=Vendor.objects.get(user=request.user)
+    return vendor
+
+
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)  
 def vprofile(request):
@@ -34,3 +45,86 @@ def vprofile(request):
         'vendor':vendor,
     }
     return render(request,"vendor/vprofile.html",context)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
+def menu_builder(request):
+    vendor=get_vendor(request)
+    categories=Category.objects.filter(vendor=vendor).order_by('created_at')
+    context={
+        'categories':categories,
+    }
+    return render(request,"vendor/menu_builder.html",context)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
+def fooditems_by_category(request,pk=None):
+    vendor=get_vendor(request)
+    category=get_object_or_404(Category,pk=pk)
+    fooditems=FoodItem.objects.filter(vendor=vendor,category=category)
+    context={
+        'fooditems':fooditems,
+        'category':category,
+    }
+    print(fooditems)
+    return render(request,"vendor/fooditems_by_category.html",context)
+
+def add_category(request):
+    if request.method=="POST":
+        form=CategoryForm(request.POST)
+        if form.is_valid():
+            category_name=form.cleaned_data['category_name']    #hyat html madhe input ghetlau aapan categoru name cha ani slug sathi ikde paije input manun joh html madhla data aahe tyala ikde as a cleaned data ghetlay
+            category=form.save(commit=False)    #data about to be save but not stored 
+            category.vendor=get_vendor(request)
+            category.slug=slugify(category_name)           
+            form.save()
+            messages.success(request,"Category Added Successfully")
+            return redirect('menu_builder')
+        
+        else:
+            #print(form.errors)
+            messages.warning(request,"Oops!!This category all ready exists")
+            return redirect('add_category')
+
+    else:
+        form=CategoryForm()
+                            
+    form=CategoryForm()
+    context={
+        'form':form,
+    }
+    return render(request,"vendor/add_category.html",context)
+
+def edit_category(request,pk=None):
+    category=get_object_or_404(Category,pk=pk)
+    if request.method=="POST":
+        form=CategoryForm(request.POST,instance=category)   #from the above primary key we get a instance that need to be passed in form this instance will keep the existing data manje edit karshil teva paila je naav aahe category cha description aahe te edit karaychya aadi disnaar aaplya la
+        if form.is_valid():
+            category_name=form.cleaned_data['category_name']    #hyat html madhe input ghetlau aapan categoru name cha ani slug sathi ikde paije input manun joh html madhla data aahe tyala ikde as a cleaned data ghetlay
+            category=form.save(commit=False)
+            category.vendor=get_vendor(request)
+            category.slug=slugify(category_name)           
+            form.save()
+            messages.success(request,"Category Updated Successfully")
+            return redirect('menu_builder')
+        
+        else:
+            #print(form.errors)
+            messages.warning(request,"Oops!!Changes didn't reflect,try again")
+            return redirect('edit_category')
+
+    else:
+        form=CategoryForm(instance=category)
+                            
+    form=CategoryForm()
+    context={
+        'form':form,
+        'category':category,
+    }
+    return render(request,"vendor/edit_category.html",context)
+
+def delete_category(request,pk=None):
+    category=get_object_or_404(Category,pk=pk)
+    category.delete()
+    messages.success(request,"Category Deleted Successfully!")
+    return redirect('menu_builder')
