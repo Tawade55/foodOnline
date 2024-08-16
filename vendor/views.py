@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_vendor
 from menu.models import Category
 from menu.models import FoodItem
-from menu.forms import CategoryForm
+from menu.forms import CategoryForm,FoodItemForm
 from django.template.defaultfilters import slugify
 
 # Create your views here.
@@ -69,6 +69,8 @@ def fooditems_by_category(request,pk=None):
     print(fooditems)
     return render(request,"vendor/fooditems_by_category.html",context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
 def add_category(request):
     if request.method=="POST":
         form=CategoryForm(request.POST)
@@ -88,13 +90,16 @@ def add_category(request):
 
     else:
         form=CategoryForm()
+        
                             
-    form=CategoryForm()
+    
     context={
         'form':form,
     }
     return render(request,"vendor/add_category.html",context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
 def edit_category(request,pk=None):
     category=get_object_or_404(Category,pk=pk)
     if request.method=="POST":
@@ -115,16 +120,88 @@ def edit_category(request,pk=None):
 
     else:
         form=CategoryForm(instance=category)
+        
                             
-    form=CategoryForm()
+    
     context={
         'form':form,
         'category':category,
     }
     return render(request,"vendor/edit_category.html",context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
 def delete_category(request,pk=None):
     category=get_object_or_404(Category,pk=pk)
     category.delete()
     messages.success(request,"Category Deleted Successfully!")
     return redirect('menu_builder')
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
+def add_food(request):
+    if request.method=="POST":
+        form=FoodItemForm(request.POST,request.FILES)
+        if form.is_valid():
+            foodtitle=form.cleaned_data['food_title']    #hyat html madhe input ghetlau aapan categoru name cha ani slug sathi ikde paije input manun joh html madhla data aahe tyala ikde as a cleaned data ghetlay
+            food=form.save(commit=False)    #data about to be save but not stored 
+            food.vendor=get_vendor(request)
+            food.slug=slugify(foodtitle)           
+            form.save()
+            messages.success(request,"Food Item Added Successfully")
+            return redirect('fooditems_by_category',food.category.id)
+        
+        else:
+            #print(form.errors)
+            messages.warning(request,"Oops!!This category all ready exists")
+            return redirect('add_food')
+
+    else:
+        form=FoodItemForm()
+        #modify this form
+        form.fields['category'].queryset=Category.objects.filter(vendor=get_vendor(request))
+    context={
+        'form':form,
+    }
+    return render(request,'vendor/add_food.html',context)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
+def edit_food(request,pk=None):
+    food=get_object_or_404(FoodItem,pk=pk)
+    if request.method=="POST":
+        form=FoodItemForm(request.POST,request.FILES,instance=food)   #from the above primary key we get a instance that need to be passed in form this instance will keep the existing data manje edit karshil teva paila je naav aahe category cha description aahe te edit karaychya aadi disnaar aaplya la
+        if form.is_valid():
+            foodtitle=form.cleaned_data['food_title']    #hyat html madhe input ghetlau aapan categoru name cha ani slug sathi ikde paije input manun joh html madhla data aahe tyala ikde as a cleaned data ghetlay
+            food=form.save(commit=False)
+            food.vendor=get_vendor(request)
+            food.slug=slugify(foodtitle)           
+            form.save()
+            messages.success(request,"Food Item Updated Successfully")
+            return redirect('fooditems_by_category',food.category.id)
+        
+        else:
+            #print(form.errors)
+            messages.warning(request,"Oops!!Changes didn't reflect,try again")
+            return redirect('edit_food')
+
+    else:
+        form=FoodItemForm(instance=food)
+        #modify this form
+        form.fields['category'].queryset=Category.objects.filter(vendor=get_vendor(request))
+    context={
+        'form':form,
+        'food':food,
+    }
+    return render(request,"vendor/edit_food.html",context)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor) 
+def delete_food(request,pk=None):
+    food=get_object_or_404(FoodItem,pk=pk)
+    food.delete()
+    messages.success(request,"Food Item Deleted Successfully!")
+    return redirect('fooditems_by_category',food.category.id)
+
+    
