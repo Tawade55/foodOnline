@@ -20,6 +20,7 @@ urlpatterns=[
     path('forget_password_validate/<uidb64>/<token>',views.forget_password_validate,name='forget_password_validate'),
     path('reset_password/',views.reset_password,name='reset_password'),
 
-    path('vendor/',include('vendor.urls'))
+    path('vendor/',include('vendor.urls')),
+    path('customer/',include('customers.urls')),
 
 ]
