@@ -53,7 +53,7 @@ $(document).ready(function(){                   //hyat na aata jeva pan + var ca
                     //subtotal,tax and grand_total
                     applyCartAmounts(
                         response.cart_amount['subtotal'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total'],
                     )
 
@@ -99,7 +99,7 @@ $(document).ready(function(){                   //hyat na aata jeva pan + var ca
 
                         applyCartAmounts(
                             response.cart_amount['subtotal'],
-                            response.cart_amount['tax'],
+                            response.cart_amount['tax_dict'],
                             response.cart_amount['grand_total'],
                         )
     
@@ -132,7 +132,7 @@ $(document).ready(function(){                   //hyat na aata jeva pan + var ca
 
                         applyCartAmounts(
                             response.cart_amount['subtotal'],
-                            response.cart_amount['tax'],
+                            response.cart_amount['tax_dict'],
                             response.cart_amount['grand_total'],
                         )
                         
@@ -159,11 +159,19 @@ $(document).ready(function(){                   //hyat na aata jeva pan + var ca
         }
 
         //Apply cart amounts
-        function applyCartAmounts(subtotal,tax,grand_total){
+        function applyCartAmounts(subtotal,tax_dict,grand_total){
             if(window.location.pathname=='/cart/'){ //heh fakta user logedin aasel ar tyala disla paije
                 $('#subtotal').html(subtotal)   //ikde aapan html code madhun id fetch keli aahe ani tila ikdun call karat aahe tikde render karnya sathi
-                $('#tax').html(tax)
                 $('#total').html(grand_total)
+
+                console.log(tax_dict)
+                for(key1 in tax_dict){
+                    console.log(tax_dict[key1])
+                    for(key2 in tax_dict[key1]){
+                        //console.log(tax_dict[key1][key2])
+                        $('#tax-'+key1).html(tax_dict[key1][key2])
+                    }
+                }
             }
         }
 });
