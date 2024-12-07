@@ -22,7 +22,7 @@ class Category(models.Model):
     
 class FoodItem(models.Model):
     vendor=models.ForeignKey(Vendor,on_delete=models.CASCADE)
-    category=models.ForeignKey(Category,on_delete=models.CASCADE)
+    category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name="fooditems")#hyat related_name vala ghetlay karanki aplya la fetch karaychay fooditems tya categories madhele pan ikde categories madhe fooditems nahi yeth pan fooditems category var foreign key ne relate karttat mahnun tasa consider kelay
     food_title=models.CharField(max_length=50)
     slug=models.SlugField(max_length=100,unique=True)
     description=models.TextField(max_length=250,blank=True)
