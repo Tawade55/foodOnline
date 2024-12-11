@@ -1,4 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
+
+from orders.models import Order
 from .forms import UserForm
 from .models import User,userprofile
 from vendor.forms import VendorForm
@@ -163,7 +165,15 @@ def myAccount(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)        
 def custdashboard(request):
-        return render(request,"accounts/custdashboard.html")
+        orders=Order.objects.filter(user=request.user,is_ordered=True)
+        recent_orders=orders[:5]
+        order_count=orders.count()
+        context={
+                'orders':orders,
+                'order_count':order_count,
+                'recent_orders':recent_orders
+        }
+        return render(request,"accounts/custdashboard.html",context)
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)  
