@@ -9,7 +9,7 @@ from django.contrib import messages
 def cprofile(request):
     profile=get_object_or_404(userprofile,user=request.user)
     if request.method=="POST":
-        profile_form=UserProfileForm(request.POST,request.FILES,instance=profile)
+        profile_form=UserProfileForm(request.POST,request.FILES,instance=profile)   #instance manje je user chi logedin details aahet te tyala profile madhe visit kelya var disle paije aadi pasun tyala fakta toh update vagere karu shakto 
         user_form=UserInfoForm(request.POST,instance=request.user)
         if profile_form.is_valid() and user_form.is_valid():
             profile_form.save()

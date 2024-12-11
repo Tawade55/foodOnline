@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'menu',
     'marketplace',
     'customers',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,8 @@ EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL='FoodOnline Marketplace <tester.vivek.2march23@gmail.com>'
 
 GOOGLE_API_KEY="AIzaSyCARS_bSzq83HePMeT8bxTwEvNgsvxuEa4"
+
+RZP_KEY_ID=config('RZP_KEY_ID')
+RZP_KEY_SECRET=config('RZP_KEY_SECRET')
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'

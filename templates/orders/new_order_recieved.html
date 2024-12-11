@@ -1,0 +1,7 @@
+{% autoescape off %}    <!--we trust the values of from where they are coming -->
+
+You have a new order.
+Your order number:  {{ order.order_number }}
+Transaction ID: {{ order.payment.transaction_id }}
+
+{% endautoescape %}
