@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'marketplace',
     'customers',
     'orders',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,8 @@ WSGI_APPLICATION = 'foodOnline_main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        #'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE':'django.contrib.gis.db.backends.postgis',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD':config('DB_PASSWORD'),
@@ -160,9 +162,14 @@ EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL='FoodOnline Marketplace <tester.vivek.2march23@gmail.com>'
 
-GOOGLE_API_KEY="AIzaSyCARS_bSzq83HePMeT8bxTwEvNgsvxuEa4"
+GOOGLE_API_KEY='AIzaSyAjf9WV2WNgWeNh_wRMxfmO--I1nIqhqVA'
 
 RZP_KEY_ID=config('RZP_KEY_ID')
 RZP_KEY_SECRET=config('RZP_KEY_SECRET')
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
+
+if DEBUG==True:
+    os.environ['PATH']=os.path.join(BASE_DIR,'venv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
+    os.environ['PROJ_LIB']=os.path.join(BASE_DIR,'venv\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
+    GDAL_LIBRARY_PATH=os.path.join(BASE_DIR,'venv\Lib\site-packages\osgeo\gdal304.dll')

@@ -23,6 +23,49 @@ function onPlaceChanged (){
         console.log('place name=>', place.name)
     }
     // get the address components and assign them to the fields
+
+    var geocoder=new google.maps.Geocoder()
+    var address=document.getElementById('id_address').value
+
+    geocoder.geocode({'address':address},function(results,status){
+        if(status==google.maps.GeocoderStatus.OK){
+            var latitude=results[0].geometry.location.lat();
+            var longitude=results[0].geometry.location.lng();
+
+            $('#id_latitude').val(latitude);
+            $('#id_longitude').val(longitude);
+
+            $('#id_address').val(address);
+        }
+    });
+
+    //loop through the address components and assign other address data
+    console.log(place.address_components);
+    for(var i=0;i<place.address_components.length;i++)
+        for(var j=0;j<place.address_components[i].types.length;j++){
+            //get country
+            if(place.address_components[i].types[j]=='country'){
+                $('#id_country').val(place.address_components[i].long_name);
+            }
+
+            //get state
+            if(place.address_components[i].types[j]=='administrative_area_level_1'){
+                $('#id_state').val(place.address_components[i].long_name);
+            }
+
+            //get city
+            if(place.address_components[i].types[j]=='locality'){
+                $('#id_city').val(place.address_components[i].long_name);
+            }
+
+            //get pincode
+            if(place.address_components[i].types[j]=='postal_code'){
+                $('#id_pin_code').val(place.address_components[i].long_name);
+            }else{
+                $('#id_pin_code').val("")
+            }
+
+    }
 }
 //Add to cart
 $(document).ready(function(){                   //hyat na aata jeva pan + var cart madhe click karnaar teva food id ani tyacha url store honaar
@@ -64,7 +107,7 @@ $(document).ready(function(){                   //hyat na aata jeva pan + var ca
     })
 
 
-
+    
 //place the cart item quantity on load
     $('.item_qty').each(function(){
         var the_id=$(this).attr('id')

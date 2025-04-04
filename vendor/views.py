@@ -80,8 +80,10 @@ def add_category(request):
             category_name=form.cleaned_data['category_name']    #hyat html madhe input ghetlau aapan categoru name cha ani slug sathi ikde paije input manun joh html madhla data aahe tyala ikde as a cleaned data ghetlay
             category=form.save(commit=False)    #data about to be save but not stored 
             category.vendor=get_vendor(request)
-            category.slug=slugify(category_name)           
-            form.save()
+                       
+            category.save() #Here the category id will be generated
+            category.slug=slugify(category_name)+'-'+str(category.id)   #chicken-15
+            category.save()
             messages.success(request,"Category Added Successfully")
             return redirect('menu_builder')
         

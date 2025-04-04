@@ -47,7 +47,7 @@
 													This Month
 												</div>
 												<div class="card-body text-center">
-													<a href="#"><h5 class="card-title"></h5>&#x20b9;{{ current_month_revenue }}</a>
+													<a href="#"><h5 class="card-title"></h5>&#x20b9;{{ current_month_revenue | floatformat:2}}</a>
 												</div>
 											</div>	
 										</div>
@@ -75,7 +75,7 @@
 														  <tr>
 															<td>{{ order.order_number }}</td>
 															<td>{{ order.name }}</td>
-															<td>&#8377;{{ order.get_total_by_vendor.grand_total }}</td>
+															<td>&#8377;{{ order.get_total_by_vendor.grand_total | floatformat:2 }}</td>
 															<td>{{  order.status }}</td>
 															<td>{{  order.created_at }}</td>
 															<td><a href="{% url 'vendor_order_detail' order.order_number %}" class="btn btn-danger">Details</a></td>
