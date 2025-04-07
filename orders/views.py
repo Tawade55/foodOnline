@@ -11,7 +11,7 @@ from accounts.utils import send_notification
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,JsonResponse
 from menu.models import FoodItem
-
+from django.contrib.sites.shortcuts import get_current_site
 
 
 
@@ -156,6 +156,7 @@ def payments(request):
         #send order confirmation email to the customer
         mail_subject='Thank you for ordering with us'
         mail_template='orders/order_confirmation_email.html'
+        #ordered_food=OrderedFood.objects.filter(order=order)
         context={
             'user':request.user,
             'order':order,
@@ -170,6 +171,7 @@ def payments(request):
         for i in cart_items:
             if i.fooditem.vendor.user.email not in to_emails:       #ikde vegle vegle restaurant madhun order aasu shakte mag tya veglya veglya vendors la mail janaar about the order
                 to_emails.append(i.fooditem.vendor.user.email)
+                
         print('to_emails=>',to_emails)
         context={
             'order':order,
